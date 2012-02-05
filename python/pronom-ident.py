@@ -66,6 +66,10 @@ class FiwalkFido(fido.Fido):
                 alias = f.find('alias')
                 out['pronomFormatAlias'] = mime.alias if alias != None else None
         return out
+
+def pronom_ident(fn):
+    f = FiwalkFido(quiet=True)
+    return f.identify_file(fn)
     
 def main():
     parser = OptionParser()
@@ -76,8 +80,8 @@ def main():
         exit(-1)
     
     filename = args[0]
-    f = FiwalkFido(quiet=True)
-    out = f.identify_file(filename)
+    out = pronom_ident(filename)
+
     for k, v in out.items():
         if v is not None:
             print k + ': ' + str(v)
