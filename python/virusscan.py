@@ -5,51 +5,39 @@ virusscan.py - Scan a bitstream for viruses; depends on clamd and pyclamd
 """
 
 import sys
-import getopt
+from optparse import OptionParser
 from pyclamd import pyclamd
 
-help_message = '''Scan a bitstream for viruses using clamav'''
+def virusscan(fn, method='socket', socket='/tmp/clamd.socket'):
+    out = {}
+    if method != 'socket':
+        raise NotImplementedError
+    else:
+        clam = pyclamd.ClamdUnixSocket(filename=socket)    
+        out['virusScannerVersion'], out['virusScannerSignatureVersion'], out['virusScannerSignatureDate'] = clam.version().split('/')
+        vscan = clam.scan_file(fn)
+        if vscan is None:
+            out['virusFound'] = 'false'
+        else:
+            out['virusFound'] = 'true'
+            out['virusSignature'] = vscan[fn][1]
+    return out
 
+def main():
+    parser = OptionParser()
+    parser.add_option('-m', '--method', dest='method',
+        default='socket', help='define method of interaction with clamav')
+    parser.add_option('-s', '--socket', dest='socket',
+        default='/tmp/clamd.socket', help='clamav unix socket to use')
+    opts, args = parser.parse_args()
 
-class Usage(Exception):
-    def __init__(self, msg):
-        self.msg = msg
-
-
-def main(argv=None):
-    if argv is None:
-        argv = sys.argv
-    try:
-        try:
-            opts, args = getopt.getopt(argv[1:], "hs", ["help", "socket="])
-        except getopt.error, msg:
-            raise Usage(msg)
-    
-        # option processing
-        for option, value in opts:
-            if option in ("-h", "--help"):
-                raise Usage(help_message)
-            if option in ("-s", "--socket"):
-                socket = value
-    
-    except Usage, err:
-        print >> sys.stderr, sys.argv[0].split("/")[-1] + ": " + str(err.msg)
-        print >> sys.stderr, "\t for help use --help"
-        return 2
+    if len(args) < 1:
+        parser.print_help()
+        exit(-1)
         
     filename = args[0]
-    out = {}
-    
-    clam = pyclamd.ClamdUnixSocket(filename=socket)    
-    out['virusScannerVersion'] = clam.version()
-    vscan = clam.scan_file(filename)
-    if vscan is None:
-        out['virusFound'] = 'false'
-    else:
-        out['virusFound'] = 'true'
-        out['virusSignature'] = vscan[filename][1]
-    
-    for k, v in out.items():
+    scan = virusscan(filename, method=opts.method, socket=opts.socket)
+    for k, v in scan.items():
         print k + ': ' + v
 
 if __name__ == "__main__":
