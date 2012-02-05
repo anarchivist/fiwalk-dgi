@@ -7,6 +7,7 @@ virusscan.py - Scan a bitstream for viruses; depends on clamd and pyclamd
 import sys
 from optparse import OptionParser
 from pyclamd import pyclamd
+import dateutil.parser
 
 def virusscan(fn, method='socket', socket='/tmp/clamd.socket'):
     out = {}
@@ -14,7 +15,10 @@ def virusscan(fn, method='socket', socket='/tmp/clamd.socket'):
         raise NotImplementedError
     else:
         clam = pyclamd.ClamdUnixSocket(filename=socket)    
-        out['virusScannerVersion'], out['virusScannerSignatureVersion'], out['virusScannerSignatureDate'] = clam.version().split('/')
+        vers = clam.version().split('/')
+        out['virusScannerVersion'] = vers[0]
+        out['virusScannerSignatureVersion'] = vers[1]
+        out['virusScannerSignatureDate'] = dateutil.parser.parse(vers[2]).strftime("%Y-%m-%dT%H:%M:%S")
         vscan = clam.scan_file(fn)
         if vscan is None:
             out['virusFound'] = 'false'
