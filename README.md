@@ -61,4 +61,4 @@ Author
 ------
 
 * Mark A. Matienzo (mark at matienzo dot org)
-* Contributors/authors of existing modules is included in source or licenses.
+* Contributors/authors of included code listed in source or licenses.
