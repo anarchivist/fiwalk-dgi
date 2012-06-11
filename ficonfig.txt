@@ -1,0 +1,2 @@
+*	dgi 	python /opt/fiwalk-dgi/python/accession.py
+#*.mp4	dgi	ruby /opt/fiwalk-dgi/ruby/get-mediainfo.rb
