@@ -13,7 +13,7 @@ More information on fiwalk and DFXML can be found in the link above and in Garfi
 DGI key-value format
 --------------------
 
-fiwalk (as of version 0.6 expects the following format)
+fiwalk (as of version 0.6) expects the following format:
 
     Key-one: Value
     keyTwo: Second value
