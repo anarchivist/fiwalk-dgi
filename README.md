@@ -1,14 +1,14 @@
 Fiwalk DGI scripts
 ==================
 
-These are Domex Gateway Interface ("DGI") scripts for Simson Garfinkel's
-[fiwalk](http://afflib.org/software/fiwalk), a command-line tool
-that processes a forensic disk image. DGI is a plug-in mechanism for fiwalk
-that allows an external program to return metadata or other structured
+These are Domex Gateway Interface ("DGI") scripts for [fiwalk](https://github.com/sleuthkit/sleuthkit/tree/master/tools/fiwalk),
+a command-line tool that uses [The Sleuth Kit](http://sleuthkit.org/) to
+extract metadata from a forensic disk image. DGI is a plug-in mechanism for
+fiwalk that allows an external program to return metadata or other structured
 information to fiwalk as key/value pairs. fiwalk outputs in a variety of
 formats including Digital Forensics XML (DFXML) and ARFF.
 
-More information on fiwalk and DFXML can be found in the link above and in Garfinkel 2012 ([10.1016/j.diin.2011.11.002](http://dx.doi.org/10.1016/j.diin.2011.11.002); [preprint available](http://simson.net/ref/2011/dfxml.pdf)).
+More information on fiwalk and DFXML can be found in the link above and in Garfinkel 2012 ([doi:10.1016/j.diin.2011.11.002](http://dx.doi.org/10.1016/j.diin.2011.11.002); [preprint available](http://simson.net/ref/2011/dfxml.pdf)).
 
 DGI key-value format
 --------------------
@@ -41,24 +41,20 @@ Included Scripts
     * get-mediainfo.rb: Uses MediaInfo for AV technical metadata extraction
     * virusscan.rb: Uses ClamAV and libclamav gem for virus/malware scanning (slow; proof of concept)
 
-Updating FIDO
--------------
+The dependencies for the Python scripts can be installed with the following commands:
 
-The Python scripts include [FIDO](https://github.com/openplanets/fido) for
-file format identification, which has been brought into the source tree
-using Git's [subtree merging](http://www.kernel.org/pub/software/scm/git/docs/v1.7.10/howto/using-merge-subtree.html) technique. 
-
-To update FIDO when a new version is released, ensure that you have the
-FIDO repository set up as a remote:
-
-    $ git remote add -f fido git://github.com/openplanets/fido
-
-Then pull in the changes accordingly:
-
-    $ git pull -s subtree fido master
+    $ cd python ; pip install -r requirements.txt
 
 Author
 ------
 
 * Mark A. Matienzo (mark at matienzo dot org)
-* Contributors/authors of included code listed in source or licenses.
+* Contributors/authors of included code listed in source or licenses where
+applicable.
+
+License
+-------
+
+Apache 2.0
+
+Feel free to contact me if for some reason this will not work for your use.
